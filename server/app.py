@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from flask import Flask
 
 app = Flask(__name__)
@@ -6,17 +8,21 @@ app = Flask(__name__)
 def index():
     return '<h1>Python Operations with Flask Routing and Views</h1>'
 
-@app.route('/print/<string:value>')
-def print_string(value):
-    print(value)
-    return value
+@app.route('/print/<string:parameter>')
+def print_string(parameter):
+    print(parameter)
+    return f'{parameter}'
+    
+    
+@app.route('/count/<int:parameter>')
+def count(parameter):
+    count = '\n'.join(str(i) for i in range(parameter))
+    return f'{count}\n'
 
-@app.route('/count/<int:num>')
-def count(num):
-    return '<br>'.join(str(i) for i in range(num + 1))
-
-@app.route('/math/<float:num1>/<operation>/<float:num2>')
+@app.route('/math/<int:num1>/<string:operation>/<int:num2>')
 def math(num1, operation, num2):
+    result = 0
+
     if operation == '+':
         result = num1 + num2
     elif operation == '-':
@@ -31,9 +37,9 @@ def math(num1, operation, num2):
     elif operation == '%':
         result = num1 % num2
     else:
-        return "Invalid operation"
+        return "Error: Invalid operation"
 
-    return str(result)
-
+    return f"{result}"
+    
 if __name__ == '__main__':
-    app.run(port=5555)
+    app.run(port=5555, debug=True)
